@@ -1,300 +1,754 @@
-GEONQUIZSCREEN — PORTABLE TASK INSTRUCTIONS
+# GEONQUIZSCREEN — TECHNICAL COPILOT GUIDE V2
 
-1. READ FIRST
+## READ FIRST
 
-Before doing anything, read:
+Before working on GeonQuizScreen, read:
 
 https://github.com/yakuzat882-cmd/GeonGameHub.1/blob/main/.github/copilot-instructions.md
 
-Then inspect the CURRENT repository files.
+The master instructions are mandatory.
 
-Do not rely only on this prompt or old code assumptions. The repository is the source of truth.
+Then inspect the CURRENT repository before editing.
 
-2. TASK SCOPE
+This file is only the specialized guide for the quiz system.
 
-This file contains the portable instructions for work related to GeonQuizScreen.
+The current repository is always more authoritative than this document.
 
-Before editing:
+---
 
-- Find the actual GeonQuizScreen HTML.
-- Find its CSS.
-- Find its JavaScript.
-- Find its question JSON/data files.
-- Find level and subject references.
-- Find timer, lives, rewards, points, coins and statistics logic.
-- Find localStorage/save logic.
-- Find all JS dependencies connected to the screen.
+# QUIZ SYSTEM PURPOSE
 
-Understand the current architecture first.
+GeonQuizScreen is the main interactive quiz experience.
 
-3. PRESERVE EXISTING SYSTEM
+It connects:
+- subject selection
+- subject type
+- question bank
+- level
+- question loading
+- answer validation
+- timer
+- lives
+- score
+- points
+- coins
+- streak/combo
+- progression
+- results
+- statistics
+- save data
 
-Do NOT rewrite the whole quiz system.
+Do not replace this architecture with a new quiz engine.
 
-Do NOT remove existing working features.
+Reuse existing functions whenever possible.
 
-Do NOT rename existing IDs/classes/functions/data keys unless absolutely required by the requested task.
+---
 
-Do NOT change unrelated files.
+# CURRENT SUBJECT STRUCTURE
 
-Do NOT change the question order if existing JavaScript depends on it.
+The project has 5 main subjects:
 
-Do NOT replace working systems with a new system just because it is easier.
+1. MATH
+2. SCIENCE
+3. PSYCHOLOGY
+4. TECH 1
+5. TECH 2
 
-Make the smallest safe modification that completes the requested task.
+Each subject contains:
 
-4. QUIZ SYSTEM
+- SUBJECT 1
+- SUBJECT 2
 
-The existing quiz system must remain functional.
+The existing quiz architecture must preserve this relationship.
+
+Never assume that SUBJECT 1 and SUBJECT 2 are interchangeable.
+
+Always inspect how the selected subject/type is represented in the current JavaScript.
+
+---
+
+# CURRENT QUESTION BANK SYSTEM
+
+The project contains two main question banks:
+
+questions.json
+questions.new.json
+
+There are also embedded versions:
+
+questions.embedded.js
+questions.new.embedded.js
+
+The application can distinguish between the existing/previous question bank and the new question bank.
+
+Do not merge these systems.
+
+Do not accidentally load the wrong bank.
+
+Do not replace external question data with embedded data unless the existing code requires it.
+
+Before changing question loading, inspect:
+- bank selection
+- fallback logic
+- loading functions
+- question normalization
+- subject filtering
+- level filtering
+
+---
+
+# QUESTION DATA
+
+The question records use fields including:
+
+- id
+- level
+- question
+- choices
+- answer
+- explanation
+
+Preserve the current data format.
+
+Do not rename fields without searching all references.
+
+Do not change the meaning of:
+- id
+- level
+- choices
+- answer
+- explanation
+
+When adding questions:
+- preserve the existing structure
+- preserve the correct subject
+- preserve the correct subject type
+- preserve the correct level
+- avoid duplicate IDs
+- avoid duplicate questions
+- avoid accidental cross-level duplication
+
+Do not reorder existing questions unless explicitly requested.
+
+---
+
+# LEVEL ALIGNMENT
+
+The quiz uses an 80-level structure.
+
+Level selection must load the correct level data.
+
+When working with level selection:
+
+1. Inspect how the selected level is stored.
+2. Inspect how the question pool is built.
+3. Inspect how questions are filtered.
+4. Verify that the selected level maps to the intended questions.
+5. Preserve existing level IDs.
+6. Preserve existing progress.
+
+Never create a second level mapping system.
+
+Do not silently change the number of levels.
+
+Do not automatically unlock levels unless explicitly requested.
+
+---
+
+# QUESTION POOL
+
+Before changing question selection logic, inspect the existing functions responsible for:
+
+- active question bank
+- subject pool
+- level filtering
+- question session creation
+- used-question tracking
+- randomization
+- question ordering
+
+Reuse the existing pipeline.
+
+Do not create a second question-selection pipeline unless absolutely necessary.
+
+If randomization exists, preserve its intended behavior.
+
+If level alignment exists, preserve it.
+
+---
+
+# QUIZ STATE
+
+The quiz maintains runtime state.
+
+Before modifying quiz state, identify the actual variables/objects/functions currently used for:
+
+- selected subject
+- selected subject type
+- selected question bank
+- selected level
+- current question
+- question index
+- question list
+- score
+- points
+- coins
+- lives
+- timer
+- streak
+- combo
+- correct answers
+- completion
+- game-over state
+
+Do not invent duplicate state variables when existing state can be reused.
+
+---
+
+# QUESTION RENDERING
+
+The quiz screen displays the current question and answer choices.
+
+Before modifying rendering:
+- inspect the existing HTML elements
+- inspect their IDs/classes
+- inspect JavaScript references
+- inspect answer event listeners
+- inspect dynamic rendering functions
+
+Do not rename IDs/classes without checking every dependency.
+
+Do not remove existing answer elements simply to replace them with new markup.
 
 Preserve:
+- question text
+- answer choices
+- selected state
+- correct/incorrect state
+- disabled state
+- explanation behavior
+- next-question behavior
 
-- Question loading
-- Subject selection
-- Level selection/progression
-- Answer checking
-- Correct/incorrect handling
-- Timer
-- Lives
-- Points
-- Coins
-- Rewards
-- Progress
-- Statistics
-- Streak/combo systems
-- Existing quiz navigation
-- Existing result/completion behavior
+---
 
-Before changing any of these, inspect how the current implementation works.
+# ANSWER HANDLING
 
-5. QUESTION DATA
+The existing answer system must remain authoritative.
 
-When working with questions:
+Before modifying answer handling, trace:
 
-- Do not delete existing questions unless explicitly requested.
-- Do not create duplicate questions.
-- Keep questions connected to the correct subject and level.
-- Preserve the existing JSON/data structure.
-- Do not randomly reorder existing questions.
-- Avoid repetitive question patterns.
-- New questions should have varied wording and answer lengths.
-- Do not make every answer unusually long.
-- Verify question counts after changes.
-- Verify that the correct questions load for the correct level.
+answer selection
+→ answer validation
+→ correct/incorrect state
+→ score/points
+→ streak/combo
+→ lives if applicable
+→ rewards if applicable
+→ question progression
+→ completion/game-over
+→ save
 
-If the task is not specifically about questions, do not modify question data.
+Do not duplicate answer validation.
 
-6. LEVELS
+Do not create a second scoring system.
 
-Preserve the current level architecture.
+Do not award rewards twice.
 
-When implementing level selection or level-related features:
+Do not advance the question twice.
 
-- Inspect how levels are currently stored.
-- Preserve existing level IDs.
-- Preserve question-to-level relationships.
-- Do not automatically unlock levels unless explicitly requested.
-- Make selected levels load through the existing quiz engine.
-- Do not create a second incompatible level system.
+---
 
-7. SUBJECTS
+# TIMER
 
-Preserve the existing subject system and selection layout.
+The normal quiz currently uses a 30-second timer.
 
-Do not redesign or reorder subject selection unless explicitly requested.
+Do not change the default unless explicitly requested.
 
-Any new feature must correctly identify the selected subject and use the existing subject data structure.
+Timer behavior must preserve:
+- start
+- countdown
+- timeout
+- stop
+- reset
+- next question
+- game-over
+- result handling
 
-8. THREE THEMES
+When changing timer UI, verify the underlying timer logic still works.
 
-Every GeonQuizScreen UI change MUST work with all 3 existing themes.
+Prevent multiple timer intervals from running simultaneously.
+
+Do not leave timers running after:
+- answer completion
+- quiz completion
+- game over
+- leaving the quiz
+
+---
+
+# LIVES
+
+The normal quiz currently supports up to 8 lives.
+
+Do not change the maximum unless explicitly requested.
+
+Before changing lives:
+- inspect how lives are initialized
+- inspect how lives decrease
+- inspect how lives are saved
+- inspect how lives recover
+- inspect game-over handling
+
+Do not create another life counter.
+
+---
+
+# SCORE / POINTS / COINS
+
+These are separate systems.
+
+Do not treat them as the same value.
+
+Preserve existing relationships between:
+- score
+- points
+- coins
+- rewards
+
+Existing points-to-coins conversion:
+100 points = 1 coin
+
+Do not change this unless explicitly requested.
+
+When modifying reward logic, verify that one answer/completion cannot accidentally grant the same reward multiple times.
+
+---
+
+# STREAK / COMBO
+
+The quiz contains streak/combo behavior.
+
+Existing milestone values include:
+3, 5, 10, 15, 20.
+
+Before modifying streak logic:
+- inspect current counters
+- inspect reset behavior
+- inspect reward behavior
+- inspect persistence
+
+Do not create duplicate streak counters.
+
+Do not reset streak incorrectly when moving between quiz questions.
+
+---
+
+# NORMAL PROGRESSION
+
+Normal Quiz Mode is connected to level progression.
+
+Normal quiz completion may update:
+- level progress
+- subject progress
+- mastery
+- titles
+- achievements
+- streak
+- statistics
+- rewards
+
+Do not let isolated modes accidentally modify normal progression.
+
+When changing completion behavior, determine whether the current mode is:
+
+- Normal Quiz
+- Daily Challenge
+- Reviewer Mode
+- another special mode
+
+Then preserve the intended mode-specific behavior.
+
+---
+
+# DAILY CHALLENGE ISOLATION
+
+Daily Challenge uses a separate 10-question session.
+
+Do not treat Daily Challenge as a normal level.
+
+Do not:
+- change normal level progression
+- consume normal level progress
+- duplicate normal rewards
+- corrupt normal quiz state
+
+Reuse question rendering and answer handling where possible, but preserve mode-specific save/reward rules.
+
+---
+
+# REVIEWER MODE ISOLATION
+
+Reviewer Mode uses a separate 10-question review session.
+
+It uses the existing question system.
+
+Reviewer Mode must remain isolated from normal progression.
+
+Unless explicitly requested, Reviewer Mode must NOT:
+- advance normal levels
+- award normal progression rewards
+- change normal completion
+- corrupt normal used-question tracking
+
+Reuse existing quiz components instead of copying the entire quiz engine.
+
+---
+
+# SAVE AND LOCALSTORAGE
+
+The quiz is connected to persistent localStorage data.
+
+Before changing any quiz save behavior:
+
+1. Search for the actual storage key.
+2. Search all references.
+3. Understand what is stored.
+4. Preserve existing player data.
+5. Add backward-compatible defaults if needed.
+6. Test reload.
+7. Test continuing the quiz where applicable.
+
+Never rename a storage key casually.
+
+Never delete saved progression.
+
+Never initialize new default data in a way that overwrites existing player data.
+
+---
+
+# USED QUESTION TRACKING
+
+The project has logic related to question history/used questions.
+
+Before changing question selection:
+- find the existing used-question storage
+- understand its scope
+- determine whether it is per subject, level, bank or mode
+
+Do not reset used-question history unintentionally.
+
+Do not make normal quiz and Reviewer Mode share history if the current implementation keeps them separate.
+
+---
+
+# SUBJECT PROGRESS
+
+Quiz completion can affect subject progress.
+
+Progress must remain aligned with the existing 80-level system.
+
+Before modifying progress:
+- inspect the current calculation
+- inspect how Subject 1 and Subject 2 are handled
+- inspect how Home reads the value
+
+Do not create a duplicate progress calculation.
+
+---
+
+# MASTERY AND TITLES
+
+Quiz progression can affect mastery and titles.
+
+Before modifying completion:
+- inspect existing mastery functions
+- inspect title functions
+- inspect their storage
+- preserve existing thresholds
+
+Do not duplicate these systems.
+
+---
+
+# ACHIEVEMENTS
+
+Quiz actions may trigger achievements.
+
+Before changing reward/completion logic:
+- inspect existing achievement checks
+- preserve existing achievement state
+- avoid triggering the same achievement repeatedly
+
+Do not create duplicate achievement storage.
+
+---
+
+# THREE THEMES
+
+GeonQuizScreen MUST work with:
+
+- original
+- light
+- dark
+
+Every quiz UI change must be checked in all 3.
 
 Check:
+- question card
+- answer buttons
+- selected answer
+- correct answer
+- incorrect answer
+- timer
+- lives
+- score
+- progress
+- panels
+- result screen
+- buttons
+- text
+- borders
 
-- Background
-- Text
-- Buttons
-- Cards
-- Borders
-- Inputs
-- Progress indicators
-- Icons
-- Modals/panels
-- Correct-answer states
-- Incorrect-answer states
-- Hover/active states
+Never hard-code a color that breaks another theme.
 
-Never introduce a hard-coded color that makes text or controls unreadable in another theme.
+---
 
-9. MOBILE UI
+# MOBILE REQUIREMENTS
 
-The game is primarily used on mobile.
-
-Keep the existing layout responsive.
+The quiz is primarily used on mobile.
 
 Check:
+- question wrapping
+- answer button width
+- touch target size
+- timer visibility
+- lives visibility
+- score visibility
+- long questions
+- long choices
+- small screens
+- orientation/responsive layout
 
-- Small screens
-- Touch targets
-- Text wrapping
-- Button sizes
-- Panels/modals
-- Quiz answers
-- Level controls
-- Long questions
-- Different screen widths
+Do not create horizontal overflow.
 
-Do not create unnecessary scrolling or oversized UI.
+Do not make buttons too small to tap.
 
-Do not redesign the entire screen for a small change.
+---
 
-10. SAVE DATA
+# HTML SAFETY
 
-Protect existing localStorage/save data.
+Before changing index.html:
 
-Before changing save logic:
+Search script.js for every affected:
+- ID
+- class
+- data attribute
+- event listener
+- selector
 
-1. Find the existing keys.
-2. Find every important reference to them.
-3. Understand the stored structure.
-4. Extend it safely.
-5. Preserve existing player data.
-6. Add safe defaults for new values when necessary.
-7. Test persistence after reload.
+If an element is dynamically accessed, preserve the expected structure.
 
-Never casually rename or delete existing save keys.
+Do not remove an element because it looks unused without checking JavaScript.
 
-Do not create a second conflicting save system.
+---
 
-11. HTML / JS DEPENDENCIES
+# CSS SAFETY
 
-Before changing HTML:
+Before changing style.css:
 
-- Search JavaScript for IDs/classes used by the screen.
-- Check event listeners.
-- Check querySelector/getElementById references.
-- Check dynamically generated elements.
-- Check data attributes.
-- Check inline references if present.
+Find existing selectors.
 
-Never remove an element just because it appears unused until the repository has been checked.
+Determine whether a selector is shared by:
+- Home
+- Quiz
+- panels
+- themes
+- other screens
 
-12. FEATURE IMPLEMENTATION
+Prefer a scoped selector for QuizScreen changes when possible.
 
-For any requested GeonQuizScreen feature:
+Avoid changing global styles for a local QuizScreen problem.
 
-1. Inspect current implementation.
-2. Identify the smallest files that need changes.
-3. Explain internally how the existing system connects.
-4. Reuse existing functions/data when possible.
-5. Implement only the requested feature.
-6. Preserve existing behavior.
-7. Test the affected flow.
-8. Test reload/save behavior if applicable.
-9. Test all 3 themes if UI was changed.
-10. Review the final diff for accidental changes.
+---
 
-13. DO NOT GUESS
+# JAVASCRIPT SAFETY
 
-If the requested feature conflicts with the existing architecture:
+Before changing script.js:
 
-Do not guess.
+Find:
+- function definition
+- all callers
+- event listeners
+- state dependencies
+- storage dependencies
+- DOM dependencies
 
-Inspect the code and determine the safest compatible approach.
+Prefer modifying the existing function over creating duplicate logic.
 
-If an important requirement cannot be implemented safely without changing another system, report the conflict briefly instead of silently breaking existing functionality.
+Keep changes localized.
 
-14. TESTING
+---
 
-Before saying DONE:
+# PERFORMANCE
 
-- Check JavaScript syntax.
-- Check for console errors when possible.
-- Test the changed feature.
-- Test normal quiz flow.
-- Test the affected level/subject.
-- Test reload if save data is involved.
-- Test mobile layout.
-- Test all 3 themes for UI changes.
-- Confirm unrelated quiz features still work.
-- Review the final diff.
+Do not introduce unnecessary:
+- repeated timers
+- repeated event listeners
+- duplicated DOM rendering
+- repeated JSON parsing
+- expensive loops
 
-Never claim something was tested if it was not actually tested.
+Do not optimize unrelated code unless requested.
 
-15. GITHUB WORKFLOW
+---
 
-Work directly from the current repository when the environment supports it.
+# DEBUGGING
 
-Before editing:
+If the quiz breaks:
 
-- Inspect the current branch and files.
-- Check for existing user changes.
-- Do not overwrite unrelated changes.
+Do not immediately rewrite the system.
 
-After editing:
+Trace in this order:
 
-- Review the diff.
-- Keep changes focused.
-- Use a clear commit message when committing is authorized.
-- Never invent commit hashes.
-- Never invent PR numbers.
-- Never invent GitHub links.
+1. selected mode
+2. selected subject
+3. selected subject type
+4. selected question bank
+5. question pool
+6. selected level
+7. session questions
+8. current question index
+9. rendering
+10. answer handler
+11. timer
+12. progression
+13. save
 
-16. SHORT RESPONSE ONLY
+Find the actual failure point first.
 
-The user works mainly from a phone.
+---
 
-After completing the task:
+# VALIDATION CHECKLIST
 
-DO NOT paste entire files.
+After QuizScreen changes:
 
-DO NOT paste large code blocks.
+[ ] Page loads without JavaScript errors.
 
-DO NOT repeat this instruction file.
+[ ] Subject selection still works.
 
-Use only:
+[ ] Subject 1 works.
+
+[ ] Subject 2 works.
+
+[ ] Previous question bank works.
+
+[ ] New question bank works.
+
+[ ] Correct level loads correct questions.
+
+[ ] Answer selection works.
+
+[ ] Correct answers work.
+
+[ ] Incorrect answers work.
+
+[ ] Timer works.
+
+[ ] Lives work.
+
+[ ] Score/points work.
+
+[ ] Coins/rewards are not duplicated.
+
+[ ] Streak/combo works.
+
+[ ] Normal progression works.
+
+[ ] Save data survives reload.
+
+[ ] Daily Challenge remains isolated.
+
+[ ] Reviewer Mode remains isolated.
+
+[ ] Original theme works.
+
+[ ] Light theme works.
+
+[ ] Dark theme works.
+
+[ ] Mobile layout works.
+
+[ ] No unrelated files were changed.
+
+---
+
+# CHANGE LIMIT
+
+Only modify files required for the requested QuizScreen task.
+
+Do not:
+- redesign the entire game
+- replace the quiz engine
+- rewrite script.js
+- replace question banks
+- rename unrelated files
+- change unrelated screens
+- add frameworks unnecessarily
+- remove existing features
+
+If a larger architectural change is genuinely necessary, explain why before doing it when possible.
+
+---
+
+# RESPONSE FORMAT
+
+The user uses a phone.
+
+Never paste entire modified files unless explicitly requested.
+
+Never paste huge code blocks in the final response.
+
+Use:
 
 DONE
 
 Files changed:
 [file names]
 
-Commit/PR:
-[real link if available]
-
 Changes:
-[2–5 short lines]
+[short summary]
 
 Tests:
-[short result]
+[short summary]
+
+Commit/PR:
+[real GitHub link if available]
 
 Notes:
 [only if necessary]
 
-If a real GitHub link exists, provide it.
+Never invent a link, commit or test result.
 
-If no real link exists, say so.
+---
 
-17. IMPORTANT
+# FINAL RULE
 
-This file is a PORTABLE TASK SPECIFICATION.
+READ MASTER INSTRUCTIONS FIRST.
 
-Always combine it with:
+INSPECT CURRENT CODE SECOND.
 
-https://github.com/yakuzat882-cmd/GeonGameHub.1/blob/main/.github/copilot-instructions.md
+TRACE DEPENDENCIES BEFORE EDITING.
 
-The master instructions control repository-wide rules.
+REUSE EXISTING QUIZ SYSTEM.
 
-This file controls GeonQuizScreen-specific work.
+PRESERVE QUESTIONS, LEVELS AND SAVE DATA.
 
-If the repository differs from information written in this file, inspect the repository and follow the CURRENT implementation.
+KEEP SPECIAL MODES ISOLATED.
 
-CORE RULE
+KEEP ALL 3 THEMES WORKING.
 
-INSPECT FIRST.
-PRESERVE EXISTING SYSTEMS.
-CHANGE ONLY WHAT IS REQUESTED.
-KEEP ALL 3 THEMES COMPATIBLE.
-PROTECT QUESTION, LEVEL AND SAVE DATA.
 TEST BEFORE CLAIMING DONE.
-KEEP THE FINAL RESPONSE SHORT.
+
+MAKE THE SMALLEST SAFE CHANGE.
+
+KEEP FINAL RESPONSES SHORT.
